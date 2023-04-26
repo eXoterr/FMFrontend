@@ -131,27 +131,30 @@ function render(){
         let rendElem = document.createElement('div')
         
         let icoBox = document.createElement('div')
-        icoBox.style.width = '16px'
-        icoBox.style.height = '16px'
+        icoBox.className = "icoBox"
+
+        let textBox = document.createElement('div')
 
         if(!(i%2)){
             rendElem.className = 'slotA'
         }else{
             rendElem.className = 'slotB'
         }
+
         if(drawAr[i].isSlot()){
             let rendImg = document.createElement('img')
             if(drawAr[i].getType() != 'dir'){
-                rendElem.textContent = drawAr[i].getName()+'.'+drawAr[i].getType()
-                rendImg.src = "pics/file.svg"
+                textBox.textContent = drawAr[i].getName()+'.'+drawAr[i].getType()
+                rendImg.src = "/public/pics/file.svg"
             }else{
-                rendElem.textContent = drawAr[i].getName()
+                textBox.textContent = drawAr[i].getName()
                 rendElem.addEventListener("click",()=>{ folderClick(drawAr[i].getName()) })
-                rendImg.src = "pics/folder.svg"
+                rendImg.src = "/public/pics/folder.svg"
             }
             icoBox.insertBefore(rendImg,null)
         }
         rendElem.insertBefore(icoBox,null)
+        rendElem.insertBefore(textBox,null)
         main.insertBefore(rendElem, null)
         
     }
