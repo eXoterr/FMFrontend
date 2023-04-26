@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Manager</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <header>
+        <h1>File Manager</h1>
+        <div>Permission: Admin</div>
+    </header>
+    <main>
+        <div class="controls">
+            <button id="update"><img draggable="false" src="pics/arrow-clockwise.svg" alt=""></button>
+            <button id="backBtn"><img draggable="false" src="pics/arrow-90deg-left.svg" alt=""></button>
+            <button id="toRoot"><img draggable="false" src="pics/house.svg" alt=""></button>
+            <button id="makeDir"><img draggable="false" src="pics/folder-plus.svg" alt=""></button>
+            <!-- <input type="file" name="fuk"> -->
+            <button id="send"><img draggable="false" src="pics/upload.svg" alt=""></button>
+            <button id="terminal"><img draggable="false" src="pics/terminal.svg" alt=""></button>
+            <div id="miniLog"></div>
+        </div>
+        <input id="path" type="text">
+        <div class="manager"></div>
+    </main>
+    <script src="main.js"></script>
+</body>
+</html>

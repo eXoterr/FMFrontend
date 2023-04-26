@@ -1,0 +1,107 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+header {
+  padding: 12px;
+  background-color: rgb(26, 26, 26);
+  display: flex;
+  border-bottom: 6px solid;
+  border-color: rgb(14, 14, 14);
+}
+header h1 {
+  font: 24px Lucida Unicode;
+  color: whitesmoke;
+  width: 22vw;
+}
+header div {
+  font: 18px Lucida Unicode;
+  color: whitesmoke;
+  width: 190px;
+  text-align: right;
+  margin-left: auto;
+}
+
+main .controls {
+  border-top: 2px solid;
+  background-color: rgb(20, 20, 20);
+  display: flex;
+  height: 41px;
+}
+main .controls #miniLog {
+  background-color: black;
+  padding: 4px;
+  font: 16px Arial;
+  color: rgb(155, 155, 155);
+  height: 50%;
+  width: 200px;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: auto;
+  margin-right: 1%;
+  border-radius: 8px;
+  overflow: hidden;
+  text-overflow: clip;
+  transition: all 0.5s ease;
+}
+main .controls button {
+  margin-top: auto;
+  margin-bottom: auto;
+  border: 1px solid;
+  padding: 6px;
+  border-radius: 8px;
+  color: black;
+  border-color: rgb(71, 71, 71);
+  background-color: rgb(99, 99, 99);
+  outline: none;
+}
+main .controls button:first-child {
+  margin-left: 12px;
+}
+main .controls button:hover {
+  background-color: rgb(116, 116, 116);
+}
+main #path {
+  width: 99.68vw;
+  height: 21px;
+  font-style: italic;
+  font-weight: bold;
+  color: rgb(34, 34, 34);
+}
+main .manager {
+  overflow-y: scroll;
+  height: 75vh;
+}
+main .manager .slotA {
+  display: flex;
+  border-top: 1px solid;
+  height: 21px;
+  padding: 4px;
+  font: 18px Lucida Console;
+  color: darkslategrey;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  background-color: rgb(188, 196, 196);
+  border-color: rgba(97, 97, 97, 0.815);
+}
+main .manager .slotA:hover {
+  background-color: rgb(187, 187, 187);
+}
+main .manager .slotB {
+  display: flex;
+  border-top: 1px solid;
+  height: 21px;
+  padding: 4px;
+  font: 18px Lucida Console;
+  color: darkslategrey;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  background-color: rgb(133, 146, 146);
+  border-color: rgba(97, 97, 97, 0.438);
+}
+main .manager .slotB:hover {
+  background-color: rgb(146, 146, 146);
+}/*# sourceMappingURL=main.css.map */
