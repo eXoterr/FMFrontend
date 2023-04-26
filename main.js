@@ -145,11 +145,11 @@ function render(){
             let rendImg = document.createElement('img')
             if(drawAr[i].getType() != 'dir'){
                 textBox.textContent = drawAr[i].getName()+'.'+drawAr[i].getType()
-                rendImg.src = "/public/pics/file.svg"
+                rendImg.src = "/pics/file.svg"
             }else{
                 textBox.textContent = drawAr[i].getName()
                 rendElem.addEventListener("click",()=>{ folderClick(drawAr[i].getName()) })
-                rendImg.src = "/public/pics/folder.svg"
+                rendImg.src = "/pics/folder.svg"
             }
             icoBox.insertBefore(rendImg,null)
         }

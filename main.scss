@@ -85,7 +85,7 @@ main {
             display: flex;
             border-top: 1px solid;
             height: 21px;
-            padding: 4px;
+            // padding: 4px;
             font: 18px Lucida Console;
             color: darkslategrey;
             user-select: none;
@@ -107,6 +107,21 @@ main {
         .slotB:hover {
             background-color: rgb(146, 146, 146);
         }
+
+        .icoBox {
+
+            width: 1.5%;
+            height: 90%;
+
+            margin: 1px;
+
+            img {
+                height: 100%;
+                width: 100%;
+            }
+
+        }
+
     }
 
 }

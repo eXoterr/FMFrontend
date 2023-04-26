@@ -77,7 +77,6 @@ main .manager .slotA {
   display: flex;
   border-top: 1px solid;
   height: 21px;
-  padding: 4px;
   font: 18px Lucida Console;
   color: darkslategrey;
   -webkit-user-select: none;
@@ -93,7 +92,6 @@ main .manager .slotB {
   display: flex;
   border-top: 1px solid;
   height: 21px;
-  padding: 4px;
   font: 18px Lucida Console;
   color: darkslategrey;
   -webkit-user-select: none;
@@ -104,4 +102,13 @@ main .manager .slotB {
 }
 main .manager .slotB:hover {
   background-color: rgb(146, 146, 146);
+}
+main .manager .icoBox {
+  width: 1.5%;
+  height: 90%;
+  margin: 1px;
+}
+main .manager .icoBox img {
+  height: 100%;
+  width: 100%;
 }/*# sourceMappingURL=main.css.map */
