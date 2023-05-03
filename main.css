@@ -28,6 +28,7 @@ main .controls {
   background-color: rgb(20, 20, 20);
   display: flex;
   height: 41px;
+  gap: 5px;
 }
 main .controls #miniLog {
   background-color: black;
@@ -55,16 +56,15 @@ main .controls button {
   border-color: rgb(71, 71, 71);
   background-color: rgb(99, 99, 99);
   outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 main .controls button:first-child {
   margin-left: 12px;
 }
 main .controls button:hover {
   background-color: rgb(116, 116, 116);
-}
-main .controls #terminal {
-  margin-left: 12px;
-  margin-right: 12px;
 }
 main #path {
   width: 99.68vw;
