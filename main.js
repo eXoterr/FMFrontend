@@ -25,18 +25,12 @@ function dirBack(){
 
 //Функция для обновления данных о файлах в директории
 async function update(){
-    let res = await fetch("http://localhost:5001/pwd", {method: "POST", body: curDir})
-    res = await res.text()
     try {
+        let res = await fetch("http://localhost:5001/pwd", {method: "POST", body: curDir})
+        res = await res.text()
         ar = JSON.parse(res)
     } catch (error) {
-        miniLog.textContent = "Error: Cannot open file"
-        miniLog.style.transition = "all 0.25s ease"
-        miniLog.style.color = "rgb(255,255,255)"
-        setTimeout(()=>{
-            miniLog.style.transition = "all 2s ease"
-            miniLog.style.color = "rgb(75,75,75)"
-        }, 1000)
+        alert("Error: Cannot open file")
         curDir = path.value
         return
     }
@@ -86,9 +80,11 @@ class file {
     #name;
     //Контент можно использовать для читаемых файлов, не мне лень это реализовывать.
     #type;
-    constructor(name = "undefined", type=""){
+    #path;
+    constructor(name = "undefined", type="", path=""){
         this.#name = name
         this.#type = type
+        this.#path = path
     }
     isSlot(){
         return true
@@ -122,24 +118,28 @@ function render(){
     // Создание кнопки возврата на уровень директории выше.
     if(curDir != "/"){
         let backElem = document.createElement('div')
-        backElem.className = 'slotA'
+        backElem.className = 'slot'
         backElem.textContent = '..'
         backElem.addEventListener('click',()=>{ dirBack() })
         main.insertBefore(backElem,null)
+
+        
     }
     for(let i=0;i<drawAr.length;i++){
         let rendElem = document.createElement('div')
+
+        // Создание кнопки выделения
+        let selectBtnContainer = document.createElement("button")
+        let selectBtnImg = document.createElement("img")
+        selectBtnImg.src = "/pics/plus.svg"
+        selectBtnContainer.insertBefore(selectBtnImg,null)
         
         let icoBox = document.createElement('div')
         icoBox.className = "icoBox"
 
         let textBox = document.createElement('div')
 
-        if(!(i%2)){
-            rendElem.className = 'slotA'
-        }else{
-            rendElem.className = 'slotB'
-        }
+        rendElem.className = 'slot'
 
         if(drawAr[i].isSlot()){
             let rendImg = document.createElement('img')
@@ -148,13 +148,15 @@ function render(){
                 rendImg.src = "/pics/file.svg"
             }else{
                 textBox.textContent = drawAr[i].getName()
-                rendElem.addEventListener("click",()=>{ folderClick(drawAr[i].getName()) })
+                rendElem.addEventListener("click",(e)=>{ e.stopPropagation(); folderClick(drawAr[i].getName()) })
                 rendImg.src = "/pics/folder.svg"
             }
+            rendImg.draggable = false
             icoBox.insertBefore(rendImg,null)
         }
         rendElem.insertBefore(icoBox,null)
         rendElem.insertBefore(textBox,null)
+        rendElem.insertBefore(selectBtnContainer,null)
         main.insertBefore(rendElem, null)
         
     }

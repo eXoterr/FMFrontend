@@ -66,6 +66,10 @@ main {
         button:hover {
             background-color: rgb(116, 116, 116);
         }
+        #terminal {
+            margin-left: 12px;
+            margin-right: 12px;
+        }
     }
 
     #path {
@@ -81,7 +85,32 @@ main {
         overflow-y: scroll;
         height: 75vh;
 
-        @mixin slot {
+        button {
+            height: 21px;
+            width: 21px;
+            margin-top: auto;
+            margin-left: auto;
+            margin-right: 1.1%;
+            margin-bottom: auto;
+            border: 1px solid;
+            // padding: 6px;
+            border-radius: 8px;
+            color: black;
+            border-color: rgb(71, 71, 71);
+            background-color: rgb(99, 99, 99);
+            outline: none;
+            display: flex;
+            img {
+                margin: auto;
+                height: 100%;
+                width: 100%;
+            }
+        }
+        button:hover {
+            background-color: rgb(176, 176, 176);
+        }
+
+        .slot {
             display: flex;
             border-top: 1px solid;
             height: 21px;
@@ -89,23 +118,15 @@ main {
             font: 18px Lucida Console;
             color: darkslategrey;
             user-select: none;
-        }
-
-        .slotA {
-            @include slot;
-            background-color: rgb(188, 196, 196);
-            border-color: rgba(97, 97, 97, 0.815);
-        }
-        .slotA:hover {
-            background-color: rgb(187, 187, 187);
-        }
-        .slotB {
-            @include slot;
             background-color: rgb(133, 146, 146);
             border-color: rgba(97, 97, 97, 0.438);
         }
-        .slotB:hover {
-            background-color: rgb(146, 146, 146);
+        .slot:nth-child(odd){
+            background-color: rgb(188, 196, 196);
+            border-color: rgba(97, 97, 97, 0.815);
+        }
+        .slot:hover {
+            background-color: rgb(157, 178, 255);
         }
 
         .icoBox {
