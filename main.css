@@ -3,6 +3,10 @@
   margin: 0;
 }
 
+.flexbox {
+  display: flex;
+}
+
 header {
   padding: 12px;
   background-color: rgb(26, 26, 26);
@@ -66,8 +70,8 @@ main .controls button:first-child {
 main .controls button:hover {
   background-color: rgb(116, 116, 116);
 }
-main #path {
-  width: 99.68vw;
+main .path {
+  width: 100%;
   height: 21px;
   font-style: italic;
   font-weight: bold;
@@ -76,13 +80,13 @@ main #path {
 main .manager {
   overflow-y: scroll;
   height: 75vh;
+  width: 50vw;
 }
 main .manager button {
   height: 21px;
   width: 21px;
   margin-top: auto;
-  margin-left: auto;
-  margin-right: 1.1%;
+  margin-left: 0.1%;
   margin-bottom: auto;
   border: 1px solid;
   border-radius: 8px;
@@ -95,7 +99,6 @@ main .manager button {
 main .manager button img {
   margin: auto;
   height: 100%;
-  width: 100%;
 }
 main .manager button:hover {
   background-color: rgb(176, 176, 176);
@@ -120,11 +123,10 @@ main .manager .slot:hover {
   background-color: rgb(157, 178, 255);
 }
 main .manager .icoBox {
-  width: 1.5%;
-  height: 90%;
+  height: 100%;
   margin: 1px;
+  overflow: hidden;
 }
 main .manager .icoBox img {
-  height: 100%;
-  width: 100%;
+  height: 90%;
 }/*# sourceMappingURL=main.css.map */
