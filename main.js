@@ -1,3 +1,4 @@
+import { API } from "./api.js"
 
 // Кнопочки
 let btnUpdate = document.getElementById("update")
@@ -11,7 +12,7 @@ class ManagerWin {
     #win;
     #path;
     #controls;
-    constructor(win = undefined, path = undefined, controls= undefined){
+    constructor(win, path, controls){
         this.#win = win
         this.#path = path
         this.#controls = controls
@@ -25,13 +26,12 @@ class ManagerWin {
         let ar;
 
         try {
-            console.log(this.#path.getDom().value)
-
-            let res = await fetch("http://localhost:5001/pwd", {method: "POST", body: this.#path.getDom().value})
-            res = await res.text()
-            ar = JSON.parse(res)
+            // let res = await fetch("http://localhost:5001/pwd", {method: "POST", body: this.#path.getDom().value})
+            // res = await res.text()
+            // ar = JSON.parse(res)
+            ar = await API.getDirs(this.#path.getDom().value)
         } catch (error) {
-            alert("Error: Cannot open directory")
+            alert("Error: Cannot open directory or file")
             this.#path.setText(this.#path.getDir())
             return
         }
@@ -40,23 +40,13 @@ class ManagerWin {
 
         
 
-        for(let i=0; i<ar.length; i++){
-            if(ar[i] == ""){
-                drawAr.push(new Empty)
-            }else{
-                if(!ar[i].includes('/')){
-                    if(ar[i].includes('.')){
-                        drawAr.push(new File(ar[i].split(".")[0],ar[i].split(".")[1]))
-                    }else{
-                        drawAr.push(new File(ar[i]))
-                    }
-                }else{
-                    drawAr.push(new File(ar[i].replace('/',''), 'dir'))
-                }
+        for(let file of ar){
+            if(file?.isdir){
+                drawAr.push(new File(file?.name, 'dir'))
+            } else {
+                drawAr.push(new File(file?.name))
             }
-            
         }
-        console.log(drawAr)
         this.#render(drawAr)
 
     }
@@ -99,7 +89,7 @@ class ManagerWin {
             let rendImg = document.createElement('img')
             if(drawAr[i].getType() != 'dir'){
                 textBox.textContent = drawAr[i].getName()+'.'+drawAr[i].getType()
-                rendImg.src = "/pics/File.svg"
+                rendImg.src = "/pics/file.svg"
             }else{
                 textBox.textContent = drawAr[i].getName()
 
@@ -158,7 +148,7 @@ class Path {
     #domInput;
     #dir;
 
-    constructor(domInput = undefined, dir = ''){
+    constructor(domInput, dir){
         this.#domInput = domInput
         this.#dir = dir
 
@@ -187,14 +177,12 @@ let wins = document.getElementsByClassName("manager")
 let paths = document.getElementsByClassName("path")
 let controls = document.getElementsByClassName("winContorls")
 let managers = [new ManagerWin(wins[0], new Path(paths[0])), new ManagerWin(wins[1], new Path(paths[1]))]
-console.log(paths)
-console.log(managers)
 
 class File {
     #name;
     #type;
     #path;
-    constructor(name = "undefined", type="", path=""){
+    constructor(name, type, path){
         this.#name = name
         this.#type = type
         this.#path = path
@@ -223,26 +211,16 @@ function dirBack(){
     update().then(()=>{ render(main) })
 }
 
-
-
-// Привязка функций к кнопкам
-btnUpdate.addEventListener('click',async ()=>{
+async function updateDirs(){
     for(let i=0; i < managers.length; i++){
         managers[i].update()
     }
-})
+}
 
-btnRoot.addEventListener('click',async ()=>{
-    curDir = "/"
-    update().then(()=>{ render(main) })
-})
-btnBack.addEventListener('click', ()=>{
-    dirBack()
-})
+// Привязка функций к кнопкам
+btnUpdate.addEventListener('click', updateDirs)
 
-
-
-
+updateDirs()
 
 
 
