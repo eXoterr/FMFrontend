@@ -1,32 +1,67 @@
 
-// Окна с которыми будем рабоать
-let main = document.getElementsByClassName("manager")[0]
-let second = document.getElementsByClassName("manager")[1]
-
-
 // Кнопочки
 let btnUpdate = document.getElementById("update")
 let btnRoot = document.getElementById("toRoot")
 let btnBack = document.getElementById("backBtn")
 
-let curDir = "/"
-let drawAr = []
 let selectedAr = []
-let miniLog = document.getElementById("miniLog")
 
-let updateOn = false
-let updateTime = 6000
 
-class managerWin {
+class ManagerWin {
     #win;
     #path;
-    constructor(win = undefined, path = undefined){
+    constructor(win = undefined, path = '/'){
         this.#win = win
+        this.#path = path
     }
 
-    render(){
-        // console.log("Render")
-        this.innerHTML = ''
+    //Функция для обновления данных о файлах в директории
+    //На выходе получаем нужые данные
+
+    async update(){
+        let drawAr = []
+
+        try {
+            console.log(this.#path.getDom().value)
+
+            let res = await fetch("http://localhost:5001/pwd", {method: "POST", body: this.#path.getDom().value})
+            res = await res.text()
+            ar = JSON.parse(res)
+        } catch (error) {
+            alert("Error: Cannot open File")
+            this.#path.setDir(this.#path.getDom().value)
+            return
+        }
+        this.#path.getDom().value = this.#path.getDir()
+        console.log(ar)
+
+        
+
+        for(let i=0; i<ar.length; i++){
+            if(ar[i] == ""){
+                drawAr.push(new Empty)
+            }else{
+                if(!ar[i].includes('/')){
+                    if(ar[i].includes('.')){
+                        drawAr.push(new File(ar[i].split(".")[0],ar[i].split(".")[1]))
+                    }else{
+                        drawAr.push(new File(ar[i]))
+                    }
+                }else{
+                    drawAr.push(new File(ar[i].replace('/',''), 'dir'))
+                }
+            }
+            
+        }
+        console.log(drawAr)
+        this.#render(drawAr)
+
+    }
+    
+    #render(drawAr){
+        // Чистим окно рендера для нового рендера
+        this.#win.innerHTML = ''
+
 
         // Создание кнопки возврата на уровень директории выше.
         if(curDir != "/"){
@@ -34,19 +69,21 @@ class managerWin {
             backElem.className = 'slot'
             backElem.textContent = '..'
             backElem.addEventListener('click',()=>{ dirBack() })
-            this.insertBefore(backElem,null)
-
-            
+            this.#win.insertBefore(backElem,null)
         }
+
         for(let i=0;i<drawAr.length;i++){
             let rendElem = document.createElement('div')
 
             // Создание кнопки выделения
+
             let selectBtnContainer = document.createElement("button")
             let selectBtnImg = document.createElement("img")
             selectBtnImg.src = "/pics/plus.svg"
-            selectBtnContainer.insertBefore(selectBtnImg,null)
-            
+            selectBtnContainer.insertBefore(selectBtnImg, null)
+
+            // Остальная отрисовка. Иконка, текст.
+
             let icoBox = document.createElement('div')
             icoBox.className = "icoBox"
 
@@ -54,49 +91,63 @@ class managerWin {
 
             rendElem.className = 'slot'
 
-            if(drawAr[i].isSlot()){
-                let rendImg = document.createElement('img')
-                if(drawAr[i].getType() != 'dir'){
-                    textBox.textContent = drawAr[i].getName()+'.'+drawAr[i].getType()
-                    rendImg.src = "/pics/file.svg"
-                }else{
-                    textBox.textContent = drawAr[i].getName()
-                    rendElem.addEventListener("click",(e)=>{ e.stopPropagation(); folderClick(drawAr[i].getName()) })
-                    rendImg.src = "/pics/folder.svg"
-                }
-                rendImg.draggable = false
-                icoBox.insertBefore(rendImg,null)
+            // Проверка на директорию. Для директории создаём прослушку на клик для перехода
+
+            let rendImg = document.createElement('img')
+            if(drawAr[i].getType() != 'dir'){
+                textBox.textContent = drawAr[i].getName()+'.'+drawAr[i].getType()
+                rendImg.src = "/pics/File.svg"
+            }else{
+                textBox.textContent = drawAr[i].getName()
+                rendElem.addEventListener("click",(e)=>{ e.stopPropagation(); folderClick(drawAr[i].getName()) })
+                rendImg.src = "/pics/folder.svg"
             }
+            rendImg.draggable = false
+            icoBox.insertBefore(rendImg,null)
+            
             rendElem.insertBefore(selectBtnContainer,null)
             rendElem.insertBefore(icoBox,null)
             rendElem.insertBefore(textBox,null)
-            this.insertBefore(rendElem, null)
+            this.#win.insertBefore(rendElem, null)
             
         }
     }
 
 }
 
-class path {
+class Path {
     #domInput;
     #dir;
 
     constructor(domInput = undefined, dir = ''){
         this.#domInput = domInput
         this.#dir = dir
-    }
 
+        this.#domInput.value = '/'
+    }
+    getDom(){
+        return this.#domInput
+    }
     setText(txt){
         this.#domInput.textContent = txt
     }
-
+    setDir(n){
+        this.#dir = n
+    }
     getDir(){
         return this.#dir
     }
 
 }
 
-class file {
+// Окна с которыми будем рабоать
+let wins = document.getElementsByClassName("manager")
+let paths = document.getElementsByClassName("path")
+let managers = [new ManagerWin(wins[0], new Path(paths[0])), new ManagerWin(wins[1], new Path(paths[1]))]
+console.log(paths)
+console.log(managers)
+
+class File {
     #name;
     #type;
     #path;
@@ -105,9 +156,6 @@ class file {
         this.#type = type
         this.#path = path
     }
-    isSlot(){
-        return true
-    }
     getName(){
         return this.#name
     }
@@ -115,59 +163,13 @@ class file {
         return this.#type
     }
 }
-class empty {
-    isSlot(){
-        return false
-    }
-}
 
-path.value = curDir
 
-//Функция для обновления данных о файлах в директории
-async function update(){
 
-    let drawAr = []
 
-    try {
-        let res = await fetch("http://localhost:5001/pwd", {method: "POST", body: curDir})
-        res = await res.text()
-        ar = JSON.parse(res)
-    } catch (error) {
-        alert("Error: Cannot open file")
-        curDir = path.value
-        return
-    }
-    miniLog.textContent = ""
-    path.value = curDir
-    console.log(ar)
 
-    drawAr = []
 
-    for(let i=0; i<ar.length; i++){
-        if(ar[i] == ""){
-            drawAr.push(new empty)
-        }else{
-            if(!ar[i].includes('/')){
-                if(ar[i].includes('.')){
-                    drawAr.push(new file(ar[i].split(".")[0],ar[i].split(".")[1]))
-                }else{
-                    drawAr.push(new file(ar[i]))
-                }
-            }else{
-                drawAr.push(new file(ar[i].replace('/',''), 'dir'))
-            }
-        }
-        
-    }
-
-    return drawAr
-
-}
-
-// Обновление содержимого по таймеру
-// setInterval(() => { update() }, updateTime);
-
-// Дальше идут менее критичные для функционала штуки
+// Функции для кнопок
 
 function dirBack(){
     let ar = curDir.split("/")
@@ -189,8 +191,11 @@ function folderClick(name){
 
 // Привязка функций к кнопкам
 btnUpdate.addEventListener('click',async ()=>{
-    update().then(()=>{ render(main) })
+    for(let i=0; i < managers.length; i++){
+        managers[i].update()
+    }
 })
+
 btnRoot.addEventListener('click',async ()=>{
     curDir = "/"
     update().then(()=>{ render(main) })
@@ -204,12 +209,4 @@ btnBack.addEventListener('click', ()=>{
 
 
 
-
-
-
-
-
-// setInterval(()=>{
-
-// },500)
 
