@@ -20,6 +20,7 @@ class ManagerWin {
 
     async update(){
         let drawAr = []
+        let ar;
 
         try {
             console.log(this.#path.getDom().value)
@@ -28,7 +29,7 @@ class ManagerWin {
             res = await res.text()
             ar = JSON.parse(res)
         } catch (error) {
-            alert("Error: Cannot open File")
+            alert("Error: Cannot open directory")
             this.#path.setDir(this.#path.getDom().value)
             return
         }
@@ -64,7 +65,7 @@ class ManagerWin {
 
 
         // Создание кнопки возврата на уровень директории выше.
-        if(curDir != "/"){
+        if(this.#path.getDom().value != "/"){
             let backElem = document.createElement('div')
             backElem.className = 'slot'
             backElem.textContent = '..'
