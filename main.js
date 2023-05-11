@@ -11,10 +11,10 @@ class ManagerWin {
     #win;
     #path;
     #controls;
-    constructor(win = undefined, controls= undefined, path = undefined){
+    constructor(win = undefined, path = undefined, controls= undefined){
         this.#win = win
-        this.#controls = controls
         this.#path = path
+        this.#controls = controls
     }
 
     //Функция для обновления данных о файлах в директории
@@ -147,7 +147,7 @@ class Controls{
         let buttons = {}
         let btn = document.getElementsByClassName("updateLocal")[num]
         btn.addEventListener("click", ()=>{
-            
+
         })
 
     }
