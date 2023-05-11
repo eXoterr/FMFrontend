@@ -37,23 +37,6 @@ main {
         height: 41px;
         gap: 5px;
 
-        #miniLog {
-            background-color: black;
-            padding: 4px;
-            font: 16px Arial;
-            color: rgb(155, 155, 155);
-            height: 50%;
-            width: 200px;
-            margin-top: auto;
-            margin-bottom: auto;
-            margin-left: auto;
-            margin-right: 1%;
-            border-radius: 8px;
-            overflow: hidden;
-            text-overflow: clip;
-            transition: all 0.5s ease;
-        }
-
         button {
             margin-top: auto;
             margin-bottom: auto;
@@ -83,6 +66,31 @@ main {
         font-style: italic;
         font-weight: bold;
         color: rgb(34, 34, 34);
+    }
+
+    .winContorls{
+        padding-left: 10px;
+        border-top: 2px solid;
+        background-color: rgb(20, 20, 20);
+        display: flex;
+        height: 41px;
+        gap: 5px;
+
+        button {
+            margin-top: auto;
+            margin-bottom: auto;
+            border: 1px solid;
+            padding: 6px;
+            border-radius: 8px;
+            color: black;
+            border-color: rgb(71, 71, 71);
+            background-color: rgb(99, 99, 99);
+            outline: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
     }
 
     .manager {

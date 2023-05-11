@@ -10,8 +10,10 @@ let selectedAr = []
 class ManagerWin {
     #win;
     #path;
-    constructor(win = undefined, path = '/'){
+    #controls;
+    constructor(win = undefined, controls= undefined, path = undefined){
         this.#win = win
+        this.#controls = controls
         this.#path = path
     }
 
@@ -30,10 +32,10 @@ class ManagerWin {
             ar = JSON.parse(res)
         } catch (error) {
             alert("Error: Cannot open directory")
-            this.#path.setDir(this.#path.getDom().value)
+            this.#path.setText(this.#path.getDir())
             return
         }
-        this.#path.getDom().value = this.#path.getDir()
+        this.#path.setDir(this.#path.getText())
         console.log(ar)
 
         
@@ -58,14 +60,14 @@ class ManagerWin {
         this.#render(drawAr)
 
     }
-    
+
     #render(drawAr){
         // Чистим окно рендера для нового рендера
         this.#win.innerHTML = ''
 
 
         // Создание кнопки возврата на уровень директории выше.
-        if(this.#path.getDom().value != "/"){
+        if(this.#path.getText() != "/"){
             let backElem = document.createElement('div')
             backElem.className = 'slot'
             backElem.textContent = '..'
@@ -100,7 +102,20 @@ class ManagerWin {
                 rendImg.src = "/pics/File.svg"
             }else{
                 textBox.textContent = drawAr[i].getName()
-                rendElem.addEventListener("click",(e)=>{ e.stopPropagation(); folderClick(drawAr[i].getName()) })
+
+                //Добавляем обработку клика на директорию
+
+                rendElem.addEventListener("click",(e)=>{ e.stopPropagation(); 
+
+                    if(this.#path.getText() != '/'){
+                        this.#path.setText(this.#path.getText() + '/' + drawAr[i].getName())
+                    }else{
+                        this.#path.setText("/"+ drawAr[i].getName())
+                    }
+                    
+                    this.update()
+
+                })
                 rendImg.src = "/pics/folder.svg"
             }
             rendImg.draggable = false
@@ -112,6 +127,29 @@ class ManagerWin {
             this.#win.insertBefore(rendElem, null)
             
         }
+    }
+
+}
+
+class Controls{
+    #domEl;
+    #buttons;
+
+    constructor(elem = undefined, num = undefined){
+        if(elem == undefined){ throw new Error("elem cannot be undefiend!") }
+        if(num == undefined){ throw new Error("num cannot be undefiend!") }
+        
+        // let buttons = [
+        //     document.getElementsByClassName("updateLocal")[num],
+        //     document.getElementsByClassName("backBtn")[num],
+        //     document.getElementsByClassName("toRoot")[num]
+        // ]
+        let buttons = {}
+        let btn = document.getElementsByClassName("updateLocal")[num]
+        btn.addEventListener("click", ()=>{
+            
+        })
+
     }
 
 }
@@ -129,8 +167,11 @@ class Path {
     getDom(){
         return this.#domInput
     }
+    getText(){
+        return this.#domInput.value
+    }
     setText(txt){
-        this.#domInput.textContent = txt
+        this.#domInput.value = txt
     }
     setDir(n){
         this.#dir = n
@@ -144,6 +185,7 @@ class Path {
 // Окна с которыми будем рабоать
 let wins = document.getElementsByClassName("manager")
 let paths = document.getElementsByClassName("path")
+let controls = document.getElementsByClassName("winContorls")
 let managers = [new ManagerWin(wins[0], new Path(paths[0])), new ManagerWin(wins[1], new Path(paths[1]))]
 console.log(paths)
 console.log(managers)
@@ -181,14 +223,7 @@ function dirBack(){
     update().then(()=>{ render(main) })
 }
 
-function folderClick(name){
-    if(curDir != '/'){
-        curDir = curDir+'/'+name 
-    }else{  
-        curDir = curDir+name
-    }
-    update().then(()=>{ render(main) })
-}
+
 
 // Привязка функций к кнопкам
 btnUpdate.addEventListener('click',async ()=>{
