@@ -83,6 +83,9 @@ main .winContorls button {
   align-items: center;
   justify-content: center;
 }
+main .winContorls button:hover {
+  background-color: rgb(116, 116, 116);
+}
 main .manager {
   overflow-y: scroll;
   height: 75vh;

@@ -148,7 +148,7 @@ class Path {
     #domInput;
     #dir;
 
-    constructor(domInput, dir){
+    constructor(domInput, dir=""){
         this.#domInput = domInput
         this.#dir = dir
 
