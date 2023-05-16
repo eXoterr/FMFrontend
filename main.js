@@ -42,7 +42,7 @@ class ManagerWin {
 
         for(let file of ar){
             if(file?.isdir){
-                drawAr.push(new File(file?.name, 'dir'))
+                drawAr.push(new File(file?.name))
             } else {
                 drawAr.push(new File(file?.name))
             }
@@ -61,7 +61,7 @@ class ManagerWin {
             let backElem = document.createElement('div')
             backElem.className = 'slot'
             backElem.textContent = '..'
-            backElem.addEventListener('click',()=>{ dirBack() })
+            backElem.addEventListener('click',()=>{ this.moveBack() })
             this.#win.insertBefore(backElem,null)
         }
 
@@ -87,7 +87,7 @@ class ManagerWin {
             // Проверка на директорию. Для директории создаём прослушку на клик для перехода
 
             let rendImg = document.createElement('img')
-            if(drawAr[i].getType() != 'dir'){
+            if(drawAr[i].isFolder()){
                 textBox.textContent = drawAr[i].getName()+'.'+drawAr[i].getType()
                 rendImg.src = "/pics/file.svg"
             }else{
@@ -138,6 +138,14 @@ class ManagerWin {
 
             this.update()
         }
+    }
+
+    // /mv json перемещаемых, и путь куда переместить
+
+    createFolder(){
+
+        // /mkdir body: полный путь до папки    
+
     }
 
 }
@@ -237,6 +245,7 @@ class File {
     #name;
     #type;
     #path;
+    #isFolder;
     constructor(name, type, path){
         this.#name = name
         this.#type = type
@@ -247,6 +256,13 @@ class File {
     }
     getType(){
         return this.#type
+    }
+    isFolder(){
+        if(this.#isFolder){
+            return true
+        }else{
+            return false
+        }
     }
 }
 
