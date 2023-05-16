@@ -119,27 +119,63 @@ class ManagerWin {
         }
     }
 
+    moveToRoot(){
+        this.#path.setText('/')
+        this.update()
+    }
+
+    moveBack(){
+        if(this.#path.getText() != '/'){
+            let temp = this.#path.getText().split("/")
+            temp.pop()
+            if(temp.join("/").length > 0){
+                this.#path.setText(temp.join("/"))
+            }else{
+                this.#path.setText("/")
+            }
+            
+
+
+            this.update()
+        }
+    }
+
 }
 
 class Controls{
     #domEl;
     #buttons;
+    #managerWin;
+    #isInited;
 
-    constructor(elem = undefined, num = undefined){
-        if(elem == undefined){ throw new Error("elem cannot be undefiend!") }
-        if(num == undefined){ throw new Error("num cannot be undefiend!") }
+    constructor(elems, num){
         
-        // let buttons = [
-        //     document.getElementsByClassName("updateLocal")[num],
-        //     document.getElementsByClassName("backBtn")[num],
-        //     document.getElementsByClassName("toRoot")[num]
-        // ]
-        let buttons = {}
-        let btn = document.getElementsByClassName("updateLocal")[num]
-        btn.addEventListener("click", ()=>{
+        this.#domEl = elems[num]
 
+        let buttons = {}
+        let btn;
+
+        btn = document.getElementsByClassName("updateLocal")[num]
+        btn.addEventListener("click", ()=>{
+            this.#managerWin.update()
         })
 
+        btn = document.getElementsByClassName("backBtn")[num]
+        btn.addEventListener("click", ()=>{
+            this.#managerWin.moveBack()
+        })
+
+        btn = document.getElementsByClassName("toRoot")[num]
+        btn.addEventListener("click", ()=>{
+            this.#managerWin.moveToRoot()
+        })
+        
+
+        this.#domEl = elems[num]
+        this.#buttons = buttons
+    }
+    setManagerWin(n){
+        this.#managerWin = n
     }
 
 }
@@ -176,7 +212,26 @@ class Path {
 let wins = document.getElementsByClassName("manager")
 let paths = document.getElementsByClassName("path")
 let controls = document.getElementsByClassName("winContorls")
-let managers = [new ManagerWin(wins[0], new Path(paths[0])), new ManagerWin(wins[1], new Path(paths[1]))]
+let tempAr = [
+    new Controls(controls,0),
+    new Controls(controls,1)
+]
+let managers = [
+    new ManagerWin
+    (
+        wins[0],
+        new Path(paths[0]),
+        tempAr[0]
+    ),
+    new ManagerWin
+    (
+        wins[1],
+        new Path(paths[1]),
+        tempAr[1]
+    )
+]
+// Доинициализируем компонент Controls, передавая ссылку на созданные окна менеджеров.
+for(let i=0; i<tempAr.length; i++){ tempAr[i].setManagerWin(managers[i]) }
 
 class File {
     #name;
