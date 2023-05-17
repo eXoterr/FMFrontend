@@ -5,6 +5,22 @@ let btnUpdate = document.getElementById("update")
 let btnRoot = document.getElementById("toRoot")
 let btnBack = document.getElementById("backBtn")
 
+let popupBlackout = document.getElementById("popUpBlackout")
+let selectionWin = document.getElementById("selectionWin")
+
+let selectionWinCloseBtn = document.getElementById("selectionWinCloseBtn")
+let selectionWinOpenBtn = document.getElementById("list")
+let selectionWinInput = document.getElementById("selectionWinInput")
+
+selectionWinCloseBtn.addEventListener("click",()=>{
+    popupBlackout.style.display = "none"
+    selectionWin.style.display = "none"
+})
+selectionWinOpenBtn.addEventListener("click",()=>{
+    popupBlackout.style.display = "block"
+    selectionWin.style.display = "block"
+})
+
 let selectedAr = []
 
 
@@ -12,10 +28,27 @@ class ManagerWin {
     #win;
     #path;
     #controls;
+    #selection;
     constructor(win, path, controls){
         this.#win = win
         this.#path = path
         this.#controls = controls
+        this.#selection = []
+    }
+
+    addToSelection(el){
+        if(!this.#selection.find(n => n == el)){
+            this.#selection.push(el)
+            console.log(el)
+            console.log("addEl: "+el.getName())
+        }else{
+            console.log("alread in")
+        }
+        
+
+    }
+    getSelection(){
+        return this.#selection
     }
 
     //Функция для обновления данных о файлах в директории
@@ -42,11 +75,18 @@ class ManagerWin {
 
         for(let file of ar){
             if(file?.isdir){
-                drawAr.push(new File(file?.name))
+                drawAr.push(new File(file?.name, "", this.#path.getDir()+file.name, true))
             } else {
-                drawAr.push(new File(file?.name))
+                let type = ''; let name = undefined
+                if(file?.name != name){
+                    [name, type] = file.name.split(".",2)
+                    // /home/imper/MyScripts/Bashin/TestDirGeneratorScript
+                }
+                drawAr.push(new File(name, type, this.#path.getDir()+file.name, false))
+                // console.log(name, type)
             }
         }
+        
         this.#render(drawAr)
 
     }
@@ -75,27 +115,36 @@ class ManagerWin {
             selectBtnImg.src = "/pics/plus.svg"
             selectBtnContainer.insertBefore(selectBtnImg, null)
 
+            selectBtnContainer.addEventListener("click", ()=>{
+                this.addToSelection(drawAr[i])
+            })
+
             // Остальная отрисовка. Иконка, текст.
 
             let icoBox = document.createElement('div')
             icoBox.className = "icoBox"
 
             let textBox = document.createElement('div')
+            textBox.className = "fileTextBox"
 
             rendElem.className = 'slot'
 
             // Проверка на директорию. Для директории создаём прослушку на клик для перехода
 
             let rendImg = document.createElement('img')
-            if(drawAr[i].isFolder()){
-                textBox.textContent = drawAr[i].getName()+'.'+drawAr[i].getType()
+            if(!drawAr[i].isFolder()){
+                if(drawAr[i].getType()){
+                    textBox.textContent = drawAr[i].getName()+'.'+drawAr[i].getType()
+                }else{
+                    textBox.textContent = drawAr[i].getName()
+                }
                 rendImg.src = "/pics/file.svg"
             }else{
                 textBox.textContent = drawAr[i].getName()
 
                 //Добавляем обработку клика на директорию
 
-                rendElem.addEventListener("click",(e)=>{ e.stopPropagation(); 
+                textBox.addEventListener("click",(e)=>{ e.stopPropagation(); 
 
                     if(this.#path.getText() != '/'){
                         this.#path.setText(this.#path.getText() + '/' + drawAr[i].getName())
@@ -142,12 +191,59 @@ class ManagerWin {
 
     // /mv json перемещаемых, и путь куда переместить
 
-    createFolder(){
+    async createFolder(){
 
-        // /mkdir body: полный путь до папки    
+        // /mkdir body: полный путь до папк
+
+        let createPath = this.#path.getText()+"/"+prompt("Введите название папки")
+        await API.createDir(createPath)
+        await this.update()
 
     }
 
+}
+
+class SelectionWin {
+    #path;
+    constructor(btns){
+        this.#path = selectionWinInput
+    }
+
+    render(drawAr){
+        let curwin = managers[0]
+        if(curwin.getSelection().length > 0){
+
+            for(let i=0; i<drawAr.length; i++){
+
+                let slot = document.createElement("div")
+                slot.className = "selectionSlot"
+
+                let btn = document.createElement("button")
+                let btnImg = document.createElement("img")
+                btnImg.src = "pics/dash.svg"
+                btnImg.draggable = "false"
+
+                let icoBox = document.createElement("div")
+                icoBox.className = "icoBox"
+                icoBox.draggable = "false"
+                let img = document.createElement("img")
+                if(drawAr[i].isFolder()){
+                    img.src = "pics/folder.svg"
+                }else{
+                    img.src = "pics/file.svg"
+                }
+                
+
+                let textBox = document.createElement("div")
+                textBox.className = "textBox"
+
+            }
+        }
+    }
+
+    moveToRight(){
+        
+    }
 }
 
 class Controls{
@@ -176,6 +272,11 @@ class Controls{
         btn = document.getElementsByClassName("toRoot")[num]
         btn.addEventListener("click", ()=>{
             this.#managerWin.moveToRoot()
+        })
+
+        btn = document.getElementsByClassName("makeDir")[num]
+        btn.addEventListener("click", ()=>{
+            this.#managerWin.createFolder()
         })
         
 
@@ -246,10 +347,11 @@ class File {
     #type;
     #path;
     #isFolder;
-    constructor(name, type, path){
+    constructor(name, type, path, isFolder){
         this.#name = name
         this.#type = type
         this.#path = path
+        this.#isFolder = isFolder
     }
     getName(){
         return this.#name
@@ -257,17 +359,16 @@ class File {
     getType(){
         return this.#type
     }
+    setPath(n){
+        this.#path = n
+    }
+    getPath(){
+        return this.#type
+    }
     isFolder(){
-        if(this.#isFolder){
-            return true
-        }else{
-            return false
-        }
+        return this.#isFolder
     }
 }
-
-
-
 
 
 

@@ -8,16 +8,38 @@
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
+    <div id="popUpBlackout">
+    <div id="selectionWin">
+        <button id="selectionWinCloseBtn">X</button>
+        <input type="text" id="selectionWinInput">
+        <div class="flexboxSelectionWin">
+        <div class="selectionManagerWin">
+            <div class="selectionSlot">
+                <button><img draggable="false" src="pics/dash.svg" alt=""></button>
+                <div class="icoBox"><img draggable="false" src="pics/folder.svg" alt=""></div>
+                <div class="textBox">Test folder</div>
+            </div>
+            
+        </div>
+        <div class="selectionWinControls">
+            <button><img src="pics/scissors.svg" alt=""></button>
+            <button><img src="pics/clipboard2.svg" alt=""></button>
+            <button><img src="pics/trash.svg" alt=""></button>
+            <button><img src="pics/x-lg.svg" alt=""></button>
+        </div>
+        </div>
+    </div>
+    </div>
     <header>
         <h1>File Manager</h1>
-        <div>Permission: Admin</div>
+        <!-- <div>Permission: Admin</div> -->
     </header>
+    
     <main>
         <div class="controls">
             <button id="update"><img draggable="false" src="pics/arrow-clockwise.svg" alt=""></button>
-            <!-- <input type="file" name="fuk"> -->
             <button id="list"><img draggable="false" src="pics/list-task.svg" alt=""></button>
-            <button id="terminal"><img draggable="false" src="pics/terminal.svg" alt=""></button>
+            <!-- <button id="terminal"><img draggable="false" src="pics/terminal.svg" alt=""></button> -->
         </div>
         <div class="flexbox">
             <div>
@@ -26,10 +48,8 @@
                     <button class="backBtn"><img draggable="false" src="pics/arrow-90deg-left.svg" alt=""></button>
                     <button class="toRoot"><img draggable="false" src="pics/house.svg" alt=""></button>
                     <button class="makeDir"><img draggable="false" src="pics/folder-plus.svg" alt=""></button>
-                    <button class="send"><img draggable="false" src="pics/upload.svg" alt=""></button>
-                    <button class="delete"><img draggable="false" src="pics/trash.svg" alt=""></button>
-                    <button class="move"><img draggable="false" src="pics/box-arrow-in-down.svg" alt=""></button>
-                    <button class="paste"><img draggable="false" src="pics/clipboard2.svg" alt=""></button>
+                    <button class="listManagerBtn"><img draggable="false" src="pics/list-task.svg" alt=""></button>
+                    <!-- <button class="send"><img draggable="false" src="pics/upload.svg" alt=""></button> -->
                 </div>
                 <input class="path" type="text">
                 <div class="manager"></div>
@@ -38,12 +58,11 @@
                 <div class="winContorls">
                     <button class="updateLocal"><img draggable="false" src="pics/arrow-clockwise.svg" alt=""></button>
                     <button class="backBtn"><img draggable="false" src="pics/arrow-90deg-left.svg" alt=""></button>
-                    <button class="makeDir"><img draggable="false" src="pics/folder-plus.svg" alt=""></button>
                     <button class="toRoot"><img draggable="false" src="pics/house.svg" alt=""></button>
-                    <button class="send"><img draggable="false" src="pics/upload.svg" alt=""></button>
-                    <button class="delete"><img draggable="false" src="pics/trash.svg" alt=""></button>
-                    <button class="move"><img draggable="false" src="pics/box-arrow-in-down.svg" alt=""></button>
-                    <button class="paste"><img draggable="false" src="pics/clipboard2.svg" alt=""></button>
+                    <button class="makeDir"><img draggable="false" src="pics/folder-plus.svg" alt=""></button>
+                    <button class="listManagerBtn"><img draggable="false" src="pics/list-task.svg" alt=""></button>
+
+                    <!-- <button class="send"><img draggable="false" src="pics/upload.svg" alt=""></button> -->
                 </div>
                 <input class="path" type="text">
                 <div class="manager"></div>                
